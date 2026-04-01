@@ -1,5 +1,5 @@
 [build]
-  # No build step needed — index.html is pre-generated
+  # No build step needed — dashboard is pre-generated
   command = "echo 'Dashboard deployed'"
   publish = "."
 
@@ -7,9 +7,16 @@
   command = "python3 -m http.server 8000"
   port = 8000
 
+# Root redirects to auth
+[[redirects]]
+  from = "/"
+  to = "/auth.html"
+  status = 200
+
+# Catch-all for SPA
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/auth.html"
   status = 200
 
 [context.production]
