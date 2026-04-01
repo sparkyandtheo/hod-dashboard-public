@@ -1,0 +1,21 @@
+[build]
+  # No build step needed — index.html is pre-generated
+  command = "echo 'Dashboard deployed'"
+  publish = "."
+
+[dev]
+  command = "python3 -m http.server 8000"
+  port = 8000
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[context.production]
+  # Production: use index.html as-is
+  command = "echo 'Production deployment'"
+
+[context.deploy-preview]
+  # Deploy preview: same
+  command = "echo 'Preview deployment'"
