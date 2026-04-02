@@ -726,6 +726,25 @@ window.addEventListener('load', function() {
 }
 </style>
 
+  
+.dialer-summary { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+.dialer-stat { background: #0f1923; border: 1px solid #1e3045; border-radius: 10px; padding: 14px 18px; flex: 1; min-width: 90px; text-align: center; }
+.dialer-stat .dval { font-size: 30px; font-weight: 800; color: #fff; line-height: 1; }
+.dialer-stat .dlabel { font-size: 11px; color: #7a9ab8; margin-top: 5px; }
+.dialer-stat.hl .dval { color: #e8a020; }
+.dialer-stat.bl .dval { color: #5aabf0; }
+.dialer-queue-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.dialer-chip { border-radius: 20px; padding: 6px 14px; font-size: 12px; font-weight: 600; }
+.dialer-chip.residential { background: #1a3020; border: 1px solid #2ecc71; color: #2ecc71; }
+.dialer-chip.scheduler { background: #1a2030; border: 1px solid #5aabf0; color: #5aabf0; }
+.dialer-bars { display: flex; flex-direction: column; gap: 6px; }
+.dialer-bar-row { display: flex; align-items: center; gap: 10px; }
+.dialer-bar-label { font-size: 11px; color: #7a9ab8; width: 30px; text-align: right; flex-shrink: 0; }
+.dialer-bar-track { flex: 1; background: #0f1923; border-radius: 20px; height: 8px; overflow: hidden; }
+.dialer-bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, #1a3060, #5aabf0); }
+.dialer-bar-count { font-size: 11px; color: #5a7a8a; width: 20px; }
+.dialer-last { font-size: 12px; color: #5a7a8a; margin-top: 14px; }
+
 </style>
 </head>
 <body>
@@ -741,7 +760,7 @@ window.addEventListener('load', function() {
     </div>
   </div>
   <div class="header-right">
-    <div class="updated">Last updated: April 02, 2026 11:04 AM</div>
+    <div class="updated">Last updated: April 02, 2026 03:10 PM</div>
     <div class="tagline">Overdelivering. All over Western New York.</div>
   </div>
 </header>
@@ -904,7 +923,7 @@ window.addEventListener('load', function() {
             <span class="bar-count">1</span>
         </div>
         
-        <p style="color:#4b5563;font-size:10px;margin-top:8px;">Updated: Apr 02 11:04 AM</p>
+        <p style="color:#4b5563;font-size:10px;margin-top:8px;">Updated: Apr 02 02:28 PM</p>
     </div>
     
 
@@ -986,7 +1005,7 @@ window.addEventListener('load', function() {
   <div class="panel installs-panel" style="margin-bottom: 28px;">
     <div class="installs-summary">
       <div class="installs-total-wrap">
-        <span class="installs-total-num">53</span>
+        <span class="installs-total-num">55</span>
         <span class="installs-total-label">installs this week</span>
       </div>
       <div class="install-day-cards">
@@ -1010,7 +1029,7 @@ window.addEventListener('load', function() {
           <div class="iday-count">9</div>
           <div class="iday-icon">🔵</div>
         </div>
-        <div class="install-day-card future" title="Bob Hodgson – Lawtons&#10;John Notaro – Orchard Park&#10;Scott Grefrath – West Seneca&#10;Rebecca Williams – West Seneca&#10;Heidi Scott – Hamburg&#10;Carlos Martinez – Boston&#10;Matt Scuse – Boston&#10;David Shaffer – Hamburg&#10;…+4 more">
+        <div class="install-day-card future" title="Edwin Valez – Clarence&#10;Donato Homes – Elma&#10;Scott Grefrath – West Seneca&#10;Rebecca Williams – West Seneca&#10;Heidi Scott – Hamburg&#10;Carlos Martinez – Boston&#10;Matt Scuse – Boston&#10;Bob Hodgson – Lawtons&#10;…+6 more">
           <div class="iday-label">Fri 4/3</div>
           <div class="iday-count">—</div>
           <div class="iday-icon">📅</div>
@@ -1089,16 +1108,19 @@ window.addEventListener('load', function() {
         </div>
         <div class="install-row">
           <div class="irow-day">Fri 4/3</div>
-          <div class="irow-count">12 installs</div>
+          <div class="irow-count">14 installs</div>
           <div class="irow-techs"><div class="tech-chip">
               <div class="tech-chip-header">Carsen <b>(2)</b></div>
-              <div class="tech-chip-towns">Lawtons, Orchard Park</div>
+              <div class="tech-chip-towns">Clarence, Elma</div>
             </div><div class="tech-chip">
               <div class="tech-chip-header">Manny <b>(2)</b></div>
               <div class="tech-chip-towns">West Seneca</div>
             </div><div class="tech-chip">
               <div class="tech-chip-header">Brett <b>(3)</b></div>
               <div class="tech-chip-towns">Hamburg, Boston</div>
+            </div><div class="tech-chip">
+              <div class="tech-chip-header">Andrew <b>(2)</b></div>
+              <div class="tech-chip-towns">Lawtons, Orchard Park</div>
             </div><div class="tech-chip">
               <div class="tech-chip-header">Andy <b>(1)</b></div>
               <div class="tech-chip-towns">Hamburg</div>
@@ -1240,7 +1262,7 @@ window.addEventListener('load', function() {
   
     <div class="sales-calls-container">
         <div class="rep-summary">
-            <div class="rep-badge" title="Mario Umbach">Mario Umbach: <strong>9</strong></div><div class="rep-badge" title="Chuck Sherry">Chuck Sherry: <strong>11</strong></div><div class="rep-badge" title="Greg Lang">Greg Lang: <strong>7</strong></div>
+            <div class="rep-badge" title="Mario Umbach">Mario Umbach: <strong>8</strong></div><div class="rep-badge" title="Chuck Sherry">Chuck Sherry: <strong>11</strong></div><div class="rep-badge" title="Greg Lang">Greg Lang: <strong>7</strong></div>
         </div>
         
         <div class="sales-calls-grid">
@@ -1249,18 +1271,10 @@ window.addEventListener('load', function() {
             <div class="day-header">
                 <div class="day-name">Thursday</div>
                 <div class="day-date">2026-04-02</div>
-                <div class="day-count">5</div>
+                <div class="day-count">4</div>
             </div>
             <div class="calls-list">
                 
-            <div class="call-item">
-                <div class="call-rep">Mario Umbach</div>
-                <div class="call-customer">SHANNON</div>
-                <div class="call-location" title="WEST SENECA, NY">WEST SENECA, NY</div>
-                <div class="call-time">09:00 AM</div>
-                <div class="call-amount">$2</div>
-            </div>
-            
             <div class="call-item">
                 <div class="call-rep">Greg Lang</div>
                 <div class="call-customer">CHRIS WEBER</div>
@@ -1541,6 +1555,76 @@ window.addEventListener('load', function() {
         </div><!-- sales-calls-grid -->
     </div><!-- sales-calls-container -->
     
+
+  
+  <div class="section-label">📞 Auto-Dialer Usage</div>
+  <div class="panel" style="margin-bottom:28px;">
+    <div class="dialer-summary">
+      <div class="dialer-stat hl"><div class="dval">0</div><div class="dlabel">Today</div></div>
+      <div class="dialer-stat bl"><div class="dval">8</div><div class="dlabel">This Week</div></div>
+      <div class="dialer-stat"><div class="dval">19</div><div class="dlabel">Last 30 Days</div></div>
+      <div class="dialer-stat"><div class="dval">50</div><div class="dlabel">All Time</div></div>
+      <div class="dialer-stat"><div class="dval">1:00</div><div class="dlabel">Avg Duration</div></div>
+      <div class="dialer-stat"><div class="dval">14m 20s</div><div class="dlabel">Week Talk Time</div></div>
+    </div>
+    <div class="dialer-queue-chips"><span class="dialer-chip residential">Residential: 5 this week</span><span class="dialer-chip scheduler">Scheduler: 3 this week</span></div>
+    <div class="two-col" style="gap:20px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#7a9ab8;margin-bottom:12px;">Hour of Day (All Time)</div>
+        <div class="dialer-bars"><div class="dialer-bar-row">
+          <span class="dialer-bar-label">8a</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">9a</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">10a</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">11a</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">12n</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">1p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">2p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">3p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">4p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">5p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div><div class="dialer-bar-row">
+          <span class="dialer-bar-label">6p</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
+        </div></div>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#7a9ab8;margin-bottom:12px;">Last 14 Days</div>
+        <div style="display:flex;align-items:flex-end;gap:3px;height:72px;"><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">20</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">21</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">22</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">1</span><div style="width:14px;height:12px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">23</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">24</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">4</span><div style="width:14px;height:48px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">25</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">1</span><div style="width:14px;height:12px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">26</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">1</span><div style="width:14px;height:12px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">27</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">28</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#1e3045;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">29</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">2</span><div style="width:14px;height:24px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">30</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">2</span><div style="width:14px;height:24px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">31</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8">2</span><div style="width:14px;height:24px;background:#5aabf0;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">01</span></div><div style="display:flex;flex-direction:column;align-items:center;gap:4px;"><span style="font-size:10px;color:#7a9ab8"></span><div style="width:14px;height:4px;background:#e8a020;border-radius:3px;"></div><span style="font-size:9px;color:#3a5068">02</span></div></div>
+      </div>
+    </div>
+    <div class="dialer-last">Last call: 2026-04-01 13:04</div>
+  </div>
+
 
   
   <!-- ═══ BID LIST ═══ -->
@@ -2078,18 +2162,18 @@ window.addEventListener('load', function() {
       <h3>🎫 Service Tickets</h3>
       <div class="trends-stat header">
         <span class="trends-label">30-Day Total</span>
-        <span class="trends-value">92</span>
+        <span class="trends-value">84</span>
       </div>
       <div class="trends-compare">
         <span><span class="label">Last Year</span><span class="value">50</span></span>
-        <span><span class="label">Change</span><span class="value">↑ +84%</span></span>
+        <span><span class="label">Change</span><span class="value">↑ +68%</span></span>
       </div>
     </div>
     <div class="trends-card">
 <h3>📅 Sales Calls Scheduled</h3>
-<div class="trends-stat header"><span class="trends-label">30-Day Total</span><span class="trends-value">74</span></div>
-<div class="trends-stat"><span class="trends-label">Conversion Rate</span><span class="trends-value">80%</span></div>
-<div class="trends-compare"><span><span class="label">Last Year</span><span class="value">10</span></span><span><span class="label">Change</span><span class="value">↑ +640%</span></span></div>
+<div class="trends-stat header"><span class="trends-label">30-Day Total</span><span class="trends-value">65</span></div>
+<div class="trends-stat"><span class="trends-label">Conversion Rate</span><span class="trends-value">77%</span></div>
+<div class="trends-compare"><span><span class="label">Last Year</span><span class="value">10</span></span><span><span class="label">Change</span><span class="value">↑ +550%</span></span></div>
 </div>
 <div class="trends-card highlight">
 <h3>💰 Big Jobs ($5,000+)</h3>
@@ -2101,11 +2185,11 @@ window.addEventListener('load', function() {
       <h3>💵 Revenue</h3>
       <div class="trends-stat header">
         <span class="trends-label">30-Day Total</span>
-        <span class="trends-value">$1,694,014</span>
+        <span class="trends-value">$1,694,939</span>
       </div>
       <div class="trends-stat">
         <span class="trends-label">Jobs Completed</span>
-        <span class="trends-value">640</span>
+        <span class="trends-value">643</span>
       </div>
       <div class="trends-compare">
         <span><span class="label">Last Year</span><span class="value">$919,588</span></span>
