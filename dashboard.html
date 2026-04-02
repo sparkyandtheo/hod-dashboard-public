@@ -127,12 +127,12 @@
   .ariana-msgcount { font-size: 10px; color: #3a5068; }
   .ariana-pending { font-size: 12px; color: #3a5068; margin-left: 8px; }
   .ariana-alert { background: #1e1208; border: 1px solid #5a3010; border-radius: 6px; padding: 8px 14px; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: #e09050; letter-spacing: 0.3px; }
-  .ariana-techs { display: flex; gap: 8px; flex-wrap: wrap; }
-  .ariana-tech-chip { display: flex; align-items: center; gap: 8px; border: 1px solid; border-radius: 8px; padding: 7px 12px; min-width: 110px; cursor: default; }
-  .ariana-tech-icon { font-size: 14px; }
-  .ariana-tech-info { display: flex; flex-direction: column; gap: 1px; }
-  .ariana-tech-name { font-size: 13px; font-weight: 700; }
-  .ariana-tech-status { font-size: 10px; color: #5a7a90; }
+  .ariana-techs { display: flex; gap: 8px; flex-wrap: wrap; align-items: stretch; }
+  .ariana-tech-chip { display: flex; align-items: center; gap: 8px; border: 1px solid; border-radius: 8px; padding: 8px 12px; width: 120px; box-sizing: border-box; cursor: default; }
+  .ariana-tech-icon { font-size: 13px; flex-shrink: 0; line-height: 1; }
+  .ariana-tech-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .ariana-tech-name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ariana-tech-status { font-size: 10px; color: #5a7a90; white-space: nowrap; }
   .ariana-nodata { font-size: 12px; color: #3a5068; }
 
 
@@ -759,7 +759,7 @@ window.addEventListener('load', function() {
     </div>
   </div>
   <div class="header-right">
-    <div class="updated">Last updated: April 02, 2026 03:15 PM</div>
+    <div class="updated">Last updated: April 02, 2026 03:33 PM</div>
     <div class="tagline">Overdelivering. All over Western New York.</div>
   </div>
 </header>
