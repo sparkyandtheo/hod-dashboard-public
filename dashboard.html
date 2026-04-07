@@ -745,52 +745,33 @@ window.addEventListener('load', function() {
 .dialer-last { font-size: 12px; color: #5a7a8a; margin-top: 14px; }
 
   
-.gr-card {
-  background: #fff;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px 20px;
-  display: inline-block;
-  min-width: 220px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-.gr-header {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 8px;
-  display: flex;
+.gr-badge {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
-}
-.gr-logo { width: 16px; height: 16px; }
-.gr-body { display: flex; align-items: center; gap: 6px; }
-.gr-rating-link {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  gap: 5px;
   text-decoration: none;
-  color: inherit;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 4px 12px;
+  margin-top: 6px;
+  transition: background 0.2s;
 }
-.gr-rating-link:hover .gr-score { text-decoration: underline; }
-.gr-score {
-  font-size: 32px;
+.gr-badge:hover { background: rgba(255,255,255,0.15); }
+.gr-favicon { width: 14px; height: 14px; }
+.gr-rating {
+  font-size: 15px;
   font-weight: 700;
-  color: #202124;
-  line-height: 1;
+  color: #fff;
 }
 .gr-stars {
-  font-size: 22px;
+  font-size: 13px;
   color: #fbbc04;
   letter-spacing: 1px;
 }
 .gr-count {
-  font-size: 13px;
-  color: #666;
-}
-.gr-footer {
-  font-size: 11px;
-  color: #aaa;
-  margin-top: 8px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
 }
 
 </style>
@@ -808,8 +789,14 @@ window.addEventListener('load', function() {
     </div>
   </div>
   <div class="header-right">
-    <div class="updated">Last updated: April 07, 2026 03:36 PM</div>
+    <div class="updated">Last updated: April 07, 2026 03:40 PM</div>
     <div class="tagline">Overdelivering. All over Western New York.</div>
+    <a href="https://www.google.com/maps/place/?q=place_id:ChIJ--gg2pMD04kR_zM1Cs2aH1E" target="_blank" class="gr-badge">
+  <img src="https://www.google.com/favicon.ico" class="gr-favicon" alt="G">
+  <span class="gr-rating">4.8</span>
+  <span class="gr-stars">★★★★½</span>
+  <span class="gr-count">(1,010)</span>
+</a>
   </div>
 </header>
 
@@ -940,7 +927,7 @@ window.addEventListener('load', function() {
             <span class="bar-count">1</span>
         </div>
         
-        <p style="color:#4b5563;font-size:10px;margin-top:8px;">Updated: Apr 07 03:38 PM</p>
+        <p style="color:#4b5563;font-size:10px;margin-top:8px;">Updated: Apr 07 03:39 PM</p>
     </div>
     
 
@@ -952,30 +939,12 @@ window.addEventListener('load', function() {
       </div>
     </div>
     <div class="panel">
-      
-      <h3>⭐ Google Reviews</h3>
-      <div class="review-stats">
-        <div class="review-stat">
-          <a href="https://www.google.com/maps/place/?q=place_id:ChIJ--gg2pMD04kR_zM1Cs2aH1E" target="_blank" style="text-decoration:none;color:inherit;">
-            <div class="rval">4.8</div><div class="rlabel">Avg Rating</div>
-          </a>
-        </div>
-        <div class="review-stat">
-          <a href="https://www.google.com/maps/place/?q=place_id:ChIJ--gg2pMD04kR_zM1Cs2aH1E" target="_blank" style="text-decoration:none;color:inherit;">
-            <div class="rval">1,010</div><div class="rlabel">Total Reviews</div>
-          </a>
-        </div>
-        <div class="review-stat">
-          <div class="rval" style="font-size:20px;color:#fbbc04;">★★★★½</div>
-          <div class="rlabel">Google</div>
-        </div>
-      </div>
-      <div class="review-quote">
-        Hamburg Overhead Door on Google Maps
-        <div class="reviewer">
-          <a href="https://www.google.com/maps/place/?q=place_id:ChIJ--gg2pMD04kR_zM1Cs2aH1E" target="_blank" style="color:#7a9ab8;">View all reviews →</a>
-        </div>
-      </div>
+      <a href="https://www.google.com/maps/place/?q=place_id:ChIJ--gg2pMD04kR_zM1Cs2aH1E" target="_blank" class="gr-badge">
+  <img src="https://www.google.com/favicon.ico" class="gr-favicon" alt="G">
+  <span class="gr-rating">4.8</span>
+  <span class="gr-stars">★★★★½</span>
+  <span class="gr-count">(1,010)</span>
+</a>
     </div>
   </div>
 
@@ -985,25 +954,25 @@ window.addEventListener('load', function() {
     <div>
       <div class="dual-label">Calls Scheduled This Week</div>
       <div class="stat-grid">
-        <div class="stat-card highlight"><span class="icon">📞</span><div class="value">28</div><div class="label">Total</div></div>
-        <div class="stat-card"><span class="icon">👷</span><div class="value">12</div><div class="label">Chuck Sherry</div></div>
-        <div class="stat-card"><span class="icon">👷</span><div class="value">12</div><div class="label">Mario Umbach</div></div>
-        <div class="stat-card"><span class="icon">👷</span><div class="value">4</div><div class="label">Greg Lang</div></div>
+        <div class="stat-card highlight"><span class="icon">📞</span><div class="value">0</div><div class="label">Total</div></div>
+        <div class="stat-card"><span class="icon">👷</span><div class="value">0</div><div class="label">Chuck Sherry</div></div>
+        <div class="stat-card"><span class="icon">👷</span><div class="value">0</div><div class="label">Mario Umbach</div></div>
+        <div class="stat-card"><span class="icon">👷</span><div class="value">0</div><div class="label">Greg Lang</div></div>
       </div>
     </div>
     <div>
       <div class="dual-label">Territory Share</div>
       <div class="rep-row">
-        <div class="rep-label">Chuck Sherry <span>12</span></div>
-        <div class="bar-track"><div class="bar-fill bar-chuck" style="width:42%"></div></div>
+        <div class="rep-label">Chuck Sherry <span>0</span></div>
+        <div class="bar-track"><div class="bar-fill bar-chuck" style="width:0%"></div></div>
       </div>
       <div class="rep-row">
-        <div class="rep-label">Mario Umbach <span>12</span></div>
-        <div class="bar-track"><div class="bar-fill bar-mario" style="width:42%"></div></div>
+        <div class="rep-label">Mario Umbach <span>0</span></div>
+        <div class="bar-track"><div class="bar-fill bar-mario" style="width:0%"></div></div>
       </div>
       <div class="rep-row">
-        <div class="rep-label">Greg Lang <span>4</span></div>
-        <div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#6b2ab0,#aa60f0);width:14%"></div></div>
+        <div class="rep-label">Greg Lang <span>0</span></div>
+        <div class="bar-track"><div class="bar-fill" style="background:linear-gradient(90deg,#6b2ab0,#aa60f0);width:0%"></div></div>
       </div>
     </div>
   </div>
@@ -1534,40 +1503,40 @@ window.addEventListener('load', function() {
         <div style="font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#7a9ab8;margin-bottom:12px;">Hour of Day (All Time)</div>
         <div class="dialer-bars"><div class="dialer-bar-row">
           <span class="dialer-bar-label">8a</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:62%"></div></div>
-          <span class="dialer-bar-count">5</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">9a</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:100%"></div></div>
-          <span class="dialer-bar-count">8</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">10a</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:87%"></div></div>
-          <span class="dialer-bar-count">7</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">11a</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:62%"></div></div>
-          <span class="dialer-bar-count">5</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">12n</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:25%"></div></div>
-          <span class="dialer-bar-count">2</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">1p</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:87%"></div></div>
-          <span class="dialer-bar-count">7</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">2p</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:75%"></div></div>
-          <span class="dialer-bar-count">6</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">3p</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:25%"></div></div>
-          <span class="dialer-bar-count">2</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">4p</span>
-          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:75%"></div></div>
-          <span class="dialer-bar-count">6</span>
+          <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
+          <span class="dialer-bar-count">0</span>
         </div><div class="dialer-bar-row">
           <span class="dialer-bar-label">5p</span>
           <div class="dialer-bar-track"><div class="dialer-bar-fill" style="width:0%"></div></div>
