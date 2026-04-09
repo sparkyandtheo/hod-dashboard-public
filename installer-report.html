@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>HOD Installer Quote & Work Report</title>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { 
@@ -297,7 +298,16 @@
       
       <div class="form-group">
         <label>Amount Collected ($) <span style="color: #ff887c;">*</span></label>
-        <input type="number" id="amountCollected" placeholder="e.g., 1450.50" min="0" step="0.01" required>
+        <input type="number" id="amountCollected" placeholder="e.g., 1450.50" min="0" step="0.01" required onchange="updateAmountDisplay()">
+      </div>
+      
+      <!-- Stripe Payment Element (conditionally shown for card payments) -->
+      <div id="stripeSection" style="display:none;">
+        <div class="form-group">
+          <label>Card Details</label>
+          <div id="card-element" style="background: #0f1923; border: 1px solid #1e3045; border-radius: 6px; padding: 10px; color: #e0e8f0;"></div>
+          <div id="card-errors" style="color: #ff6b6b; font-size: 11px; margin-top: 4px;"></div>
+        </div>
       </div>
       
       <div class="form-group">
@@ -312,8 +322,13 @@
         📌 This report will be sent to the office and added to the work tracking system. Please review all details before submitting.
       </div>
       
+      <div style="background: #1a3a20; border: 1px solid #2ecc90; color: #2ecc90; padding: 10px; border-radius: 6px; font-size: 11px; margin-bottom: 12px;">
+        <strong id="paymentSummary">💰 Total Due: $0.00</strong><br>
+        <span id="paymentMethodDisplay">Payment: Cash</span>
+      </div>
+      
       <div class="row" style="margin-bottom: 12px;">
-        <button class="button" onclick="submitReport()">✓ Submit Report</button>
+        <button class="button" id="submitBtn" onclick="submitReport()">✓ Submit & Process</button>
         <button class="button button-secondary" onclick="switchTab('job')">← Back</button>
       </div>
       
@@ -323,7 +338,27 @@
 </div>
 
 <script>
+// Stripe initialization (test mode with pk_test key)
+const stripe = Stripe('pk_test_51234567890abcdefghijklmnopqrstuvwxyz');
+const elements = stripe.elements();
+const cardElement = elements.create('card', {
+  style: {
+    base: {
+      color: '#e0e8f0',
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      fontSize: '13px',
+      '::placeholder': {
+        color: '#7a9ab8',
+      },
+    },
+    invalid: {
+      color: '#ff6b6b',
+    },
+  },
+});
+
 let materialCounter = 0;
+let isProcessingPayment = false;
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
@@ -334,7 +369,33 @@ function switchTab(tab) {
   
   if (tab === 'work') {
     updatePaymentTotals();
+    updatePaymentDisplay();
+    
+    // Mount Stripe element if credit card is selected
+    if (document.getElementById('paymentMethod').value === 'credit_card') {
+      setTimeout(() => {
+        if (!cardElement.getElement()) {
+          cardElement.mount('#card-element');
+        }
+        document.getElementById('stripeSection').style.display = 'block';
+      }, 100);
+    }
   }
+}
+
+function updatePaymentDisplay() {
+  const total = document.getElementById('grandTotal').textContent;
+  const method = document.getElementById('paymentMethod').value || 'Not selected';
+  const methodDisplay = {
+    'cash': 'Cash',
+    'check': 'Check',
+    'credit_card': 'Credit Card',
+    'ach': 'ACH Transfer',
+    'other': 'Other'
+  }[method] || method;
+  
+  document.getElementById('paymentSummary').innerHTML = `💰 Total Due: ${total}`;
+  document.getElementById('paymentMethodDisplay').textContent = `Payment: ${methodDisplay}`;
 }
 
 function addMaterialLine() {
@@ -391,6 +452,10 @@ function updatePaymentTotals() {
   document.getElementById('rateDisplay').textContent = rate.toFixed(2);
 }
 
+function updateAmountDisplay() {
+  updatePaymentDisplay();
+}
+
 function validateForm() {
   const required = [
     'ticketNumber', 'customerName', 'address', 'dateCompleted', 'timeCompleted',
@@ -413,8 +478,17 @@ function validateForm() {
   return true;
 }
 
-function submitReport() {
+async function submitReport() {
   if (!validateForm()) return;
+  
+  const submitBtn = document.getElementById('submitBtn');
+  const paymentMethod = document.getElementById('paymentMethod').value;
+  const amountCollected = parseFloat(document.getElementById('amountCollected').value);
+  
+  if (isProcessingPayment) return;
+  isProcessingPayment = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = '⏳ Processing...';
   
   const report = {
     timestamp: new Date().toISOString(),
@@ -433,24 +507,93 @@ function submitReport() {
     })),
     laborHours: parseFloat(document.getElementById('laborHours').value),
     laborRate: parseFloat(document.getElementById('laborRate').value),
-    paymentMethod: document.getElementById('paymentMethod').value,
-    amountCollected: parseFloat(document.getElementById('amountCollected').value),
-    notes: document.getElementById('paymentNotes').value
+    paymentMethod: paymentMethod,
+    amountCollected: amountCollected,
+    notes: document.getElementById('paymentNotes').value,
+    paymentStatus: 'pending'
   };
   
-  // Save to localStorage (backup)
+  // Process credit card payment
+  if (paymentMethod === 'credit_card') {
+    try {
+      // Create payment method with Stripe
+      const { paymentMethod: pm, error } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          name: report.customer,
+          address: {
+            line1: report.address
+          }
+        }
+      });
+      
+      if (error) {
+        document.getElementById('card-errors').textContent = error.message;
+        isProcessingPayment = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = '✓ Submit & Process';
+        return;
+      }
+      
+      // Send to backend for processing (placeholder - would call your backend)
+      const paymentResponse = await fetch('https://api.hamburgdoor.com/process-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          paymentMethodId: pm.id,
+          amount: Math.round(amountCollected * 100), // Convert to cents
+          currency: 'usd',
+          description: `Work Report #${report.ticket} - ${report.customer}`,
+          metadata: {
+            ticket: report.ticket,
+            customer: report.customer,
+            technician: report.technician
+          }
+        })
+      });
+      
+      const paymentData = await paymentResponse.json();
+      
+      if (paymentData.success) {
+        report.paymentStatus = 'completed';
+        report.paymentIntentId = paymentData.paymentIntentId;
+        report.transactionId = paymentData.transactionId;
+      } else {
+        throw new Error(paymentData.error || 'Payment failed');
+      }
+    } catch (err) {
+      document.getElementById('card-errors').textContent = `❌ Payment Error: ${err.message}`;
+      isProcessingPayment = false;
+      submitBtn.disabled = false;
+      submitBtn.textContent = '✓ Submit & Process';
+      return;
+    }
+  } else {
+    // Non-card payments mark as manual entry
+    report.paymentStatus = 'manual_entry';
+  }
+  
+  // Save report to localStorage
   const reports = JSON.parse(localStorage.getItem('hod_reports') || '[]');
   reports.push(report);
   localStorage.setItem('hod_reports', JSON.stringify(reports));
   
   // Show success
   const successDiv = document.getElementById('successMessage');
-  successDiv.textContent = `✅ Report submitted! Ticket #${report.ticket} (${report.dateCompleted}) has been recorded.`;
+  const statusMsg = paymentMethod === 'credit_card' ? 
+    `✅ Payment processed! Ticket #${report.ticket} recorded.` :
+    `✅ Report submitted! Ticket #${report.ticket} (${report.dateCompleted}) - Payment: ${report.paymentMethod.toUpperCase()}`;
+  
+  successDiv.textContent = statusMsg;
   successDiv.style.display = 'block';
   
   // Clear form after 2 seconds
   setTimeout(() => {
     clearForm();
+    isProcessingPayment = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = '✓ Submit & Process';
     window.scrollTo(0, 0);
   }, 2000);
 }
@@ -463,6 +606,30 @@ function clearForm() {
   updatePaymentTotals();
   switchTab('job');
 }
+
+// Payment method change handler
+document.addEventListener('DOMContentLoaded', function() {
+  const paymentMethodSelect = document.getElementById('paymentMethod');
+  paymentMethodSelect.addEventListener('change', function() {
+    const stripeSection = document.getElementById('stripeSection');
+    if (this.value === 'credit_card') {
+      stripeSection.style.display = 'block';
+      // Mount card element if not already mounted
+      setTimeout(() => {
+        if (!cardElement.getElement()) {
+          try {
+            cardElement.mount('#card-element');
+          } catch (e) {
+            // Element might already be mounted
+          }
+        }
+      }, 100);
+    } else {
+      stripeSection.style.display = 'none';
+    }
+    updatePaymentDisplay();
+  });
+});
 
 // Initialize
 window.onload = function() {
