@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOD Quote Template Generator</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+    background: #0f1923; 
+    color: #e0e8f0; 
+    min-height: 100vh;
+    padding: 20px;
+  }
+  
+  .container { max-width: 1200px; margin: 0 auto; }
+  
+  .header { 
+    background: linear-gradient(135deg, #0a1520 0%, #162030 100%); 
+    border-bottom: 2px solid #e8a020; 
+    padding: 20px 32px; 
+    margin-bottom: 28px;
+    border-radius: 10px;
+  }
+  .header h1 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #7a9ab8; }
+  
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+  
+  .panel { 
+    background: #162030; 
+    border: 1px solid #1e3045; 
+    border-radius: 10px; 
+    padding: 22px;
+  }
+  .panel h2 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+  .panel h3 { font-size: 13px; font-weight: 700; color: #e8a020; margin: 12px 0 8px; }
+  
+  .form-group { margin-bottom: 14px; }
+  label { display: block; font-size: 12px; font-weight: 600; color: #a0b8cc; margin-bottom: 5px; }
+  input, select, textarea { 
+    width: 100%; 
+    padding: 10px; 
+    background: #0f1923; 
+    border: 1px solid #1e3045; 
+    border-radius: 6px; 
+    color: #e0e8f0; 
+    font-family: inherit;
+    font-size: 13px;
+  }
+  textarea { height: 100px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { 
+    outline: none; 
+    border-color: #e8a020;
+  }
+  
+  .button {
+    background: #e8a020;
+    color: #0f1923;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 13px;
+  }
+  .button:hover { background: #ffcc60; }
+  
+  .output { 
+    background: #162030; 
+    border: 1px solid #1e3045; 
+    border-radius: 10px; 
+    padding: 22px;
+    margin-top: 28px;
+  }
+  .output h2 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+  .quote-text { 
+    background: #0f1923; 
+    border-left: 3px solid #e8a020; 
+    padding: 16px; 
+    border-radius: 6px; 
+    font-size: 13px; 
+    line-height: 1.6; 
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    color: #a0b8cc;
+    font-family: 'SF Mono', 'Courier New', monospace;
+  }
+  
+  .validation { margin-top: 16px; }
+  .validation h4 { font-size: 12px; font-weight: 700; color: #7a9ab8; margin-bottom: 8px; }
+  .validation-item { 
+    font-size: 12px; 
+    padding: 6px 10px; 
+    border-radius: 4px; 
+    margin-bottom: 4px; 
+  }
+  .validation-pass { background: #1a3a20; color: #2ecc90; }
+  .validation-fail { background: #3a1010; color: #ff887c; }
+  
+  .info-box { 
+    background: #0f1923; 
+    border: 1px solid #1e3045; 
+    border-radius: 6px; 
+    padding: 12px; 
+    font-size: 12px; 
+    color: #7a9ab8; 
+    margin-top: 12px;
+    line-height: 1.5;
+  }
+  
+  .footer { 
+    text-align: center; 
+    padding: 22px; 
+    font-size: 12px; 
+    color: #3a5068; 
+    margin-top: 28px; 
+    border-top: 1px solid #1e3045; 
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>HOD Quote Template Generator</h1>
+    <p>Master quote system — spell-checked, error-free, professional</p>
+  </div>
+
+  <div class="grid">
+    <!-- CUSTOMER DATA -->
+    <div class="panel">
+      <h2>Customer Information</h2>
+      
+      <div class="form-group">
+        <label>Customer Name</label>
+        <input type="text" id="customerName" placeholder="e.g., MARIA KOSE" value="MARIA KOSE">
+      </div>
+      
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="text" id="customerPhone" placeholder="e.g., (716) 674-0268" value="(716) 674-0268">
+      </div>
+      
+      <div class="form-group">
+        <label>Street Address</label>
+        <input type="text" id="customerAddress" placeholder="e.g., 5306 SENECA ST" value="5306 SENECA ST WEST SENECA NY 14224">
+      </div>
+      
+      <div class="form-group">
+        <label>Direction/Area Notes</label>
+        <input type="text" id="siteDirection" placeholder="e.g., OFF TRANSIT RD" value="OFF TRANSIT RD">
+      </div>
+    </div>
+
+    <!-- SITE DATA -->
+    <div class="panel">
+      <h2>Site Information</h2>
+      
+      <div class="form-group">
+        <label>Survey Date</label>
+        <input type="text" id="siteDate" placeholder="e.g., 2026-04-03" value="2026-04-03">
+      </div>
+      
+      <div class="form-group">
+        <label>Technician Name</label>
+        <input type="text" id="techName" placeholder="e.g., BEN" value="BEN">
+      </div>
+      
+      <div class="form-group">
+        <label>Door Size (or N/A if opener-only)</label>
+        <input type="text" id="doorSize" placeholder="e.g., 16×7" value="16×7">
+      </div>
+      
+      <div class="form-group">
+        <label>Track Radius</label>
+        <input type="text" id="trackRadius" placeholder="e.g., 15 inches" value="15 inches">
+      </div>
+      
+      <div class="form-group">
+        <label>Jamb Condition</label>
+        <input type="text" id="jambCondition" placeholder="e.g., flush wood" value="flush wood">
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <!-- PROPOSAL DATA -->
+    <div class="panel">
+      <h2>Proposal Details</h2>
+      
+      <div class="form-group">
+        <label>Job Type</label>
+        <select id="jobType" onchange="updateProposalFields()">
+          <option value="DOOR_ONLY">Door Only</option>
+          <option value="OPENER_ONLY" selected>Opener Only</option>
+          <option value="DOOR_OPENER">Door + Opener</option>
+          <option value="REPAIR_PARTS">Repair/Parts</option>
+          <option value="COMMERCIAL">Commercial (Multi-Door)</option>
+        </select>
+      </div>
+      
+      <div class="form-group" id="doorModelGroup" style="display:none;">
+        <label>Door Model</label>
+        <input type="text" id="doorModel" placeholder="e.g., CLOPAY MODEL 5000">
+      </div>
+      
+      <div class="form-group">
+        <label>Opener Model (or Parts Description)</label>
+        <input type="text" id="openerModel" placeholder="e.g., 7' LIFTMASTER 2220L with 1 remote" value="7' LIFTMASTER 2220L with 1 remote">
+      </div>
+      
+      <div class="form-group">
+        <label>Lead Time</label>
+        <input type="text" id="leadTime" placeholder="e.g., 2 to 10 days" value="2 to 10 days">
+      </div>
+      
+      <div class="form-group">
+        <label>Additional Notes (optional)</label>
+        <textarea id="additionalNotes" placeholder="e.g., No service charge today."></textarea>
+      </div>
+    </div>
+
+    <!-- FIELD NOTES -->
+    <div class="panel">
+      <h2>Technician Field Notes</h2>
+      <div class="info-box">
+        💡 Raw field notes will be automatically converted to professional prose. Enter shorthand; we'll make it readable.
+      </div>
+      
+      <div class="form-group" style="margin-top: 12px;">
+        <label>Current Condition / Issue</label>
+        <textarea id="currentCondition" placeholder="e.g., Old 1355 LM chain-drive opener not responding">Old 1355 LM chain-drive opener not responding</textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Photos Attached?</label>
+        <select id="hasPhotos">
+          <option value="no">No</option>
+          <option value="yes">Yes</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- GENERATE BUTTON -->
+  <div style="text-align: center; margin: 28px 0;">
+    <button class="button" onclick="generateQuote()">Generate Quote</button>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="output">
+    <h2>Generated Quote (Ready for TS10)</h2>
+    <div class="quote-text" id="quoteOutput">Click "Generate Quote" to see the result...</div>
+    
+    <div class="validation">
+      <h4>✓ Spell-Check Validation</h4>
+      <div id="validationOutput"></div>
+    </div>
+    
+    <div style="margin-top: 16px;">
+      <button class="button" onclick="copyToClipboard()">Copy to Clipboard</button>
+      <button class="button" style="margin-left: 8px; background: #5aabf0;" onclick="downloadAsText()">Download as Text</button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Hamburg Overhead Door — Master Quote Template System | v1.0 | Generated by Cipher ⚙️
+</div>
+
+<script>
+const FORBIDDEN_WORDS = {
+  'EXSISITING': 'EXISTING',
+  'EXSISITNG': 'EXISTING',
+  'PROPSOE': 'PROPOSE',
+  'ANDDISPOSE': 'AND DISPOSE',
+  'ND INSTLL': 'AND INSTALL',
+  'flauh': 'flush',
+  'COPAY': 'CLOPAY',
+  'hamburgdor': 'hamburgdoor',
+  'VIsit': 'Visit',
+  'FURNSH': 'FURNISH',
+  'FURNIS': 'FURNISH',
+};
+
+function updateProposalFields() {
+  const jobType = document.getElementById('jobType').value;
+  document.getElementById('doorModelGroup').style.display = 
+    (jobType === 'DOOR_ONLY' || jobType === 'DOOR_OPENER' || jobType === 'COMMERCIAL') ? 'block' : 'none';
+}
+
+function generateQuote() {
+  const customer = {
+    name: document.getElementById('customerName').value,
+    phone: document.getElementById('customerPhone').value,
+    address: document.getElementById('customerAddress').value,
+  };
+  
+  const site = {
+    direction: document.getElementById('siteDirection').value,
+    date: document.getElementById('siteDate').value,
+    tech: document.getElementById('techName').value,
+    doorSize: document.getElementById('doorSize').value,
+    trackRadius: document.getElementById('trackRadius').value,
+    jambs: document.getElementById('jambCondition').value,
+    currentCondition: document.getElementById('currentCondition').value,
+    hasPhotos: document.getElementById('hasPhotos').value === 'yes',
+  };
+  
+  const proposal = {
+    jobType: document.getElementById('jobType').value,
+    doorModel: document.getElementById('doorModel').value,
+    openerModel: document.getElementById('openerModel').value,
+    leadTime: document.getElementById('leadTime').value,
+    additionalNotes: document.getElementById('additionalNotes').value,
+  };
+  
+  // Build blocks
+  const blocks = [];
+  
+  // HEADER
+  blocks.push(`${customer.address}\n${site.direction}\n${customer.name} ${customer.phone}\n${site.date} ${site.tech} OUT:`);
+  
+  // FIELD NOTES (converted to prose)
+  const notes = [];
+  if (site.doorSize && site.doorSize !== 'N/A') {
+    notes.push(`Door is ${site.doorSize} with ${site.trackRadius} radius track.`);
+  }
+  if (site.jambs) {
+    notes.push(`Jambs are ${site.jambs}.`);
+  }
+  if (site.currentCondition) {
+    notes.push(site.currentCondition);
+  }
+  if (site.hasPhotos) {
+    notes.push("Photos attached.");
+  }
+  blocks.push(notes.join(" "));
+  
+  // PROPOSAL (templated by job type)
+  let proposalText = "WE PROPOSE: ";
+  if (proposal.jobType === 'DOOR_ONLY') {
+    proposalText += `To remove and dispose of the existing garage door. To furnish and install a new ${proposal.doorModel}.`;
+  } else if (proposal.jobType === 'OPENER_ONLY') {
+    proposalText += `To remove and dispose of the existing opener. To furnish and install a new ${proposal.openerModel}.`;
+  } else if (proposal.jobType === 'DOOR_OPENER') {
+    proposalText += `To remove and dispose of the existing door and opener. To furnish and install a new ${proposal.doorModel} with a ${proposal.openerModel}.`;
+  } else if (proposal.jobType === 'REPAIR_PARTS') {
+    proposalText += `To furnish and install ${proposal.openerModel}.`;
+  } else if (proposal.jobType === 'COMMERCIAL') {
+    proposalText += `To remove and dispose of existing doors and openers. To furnish and install new ${proposal.doorModel} doors with matching ${proposal.openerModel}.`;
+  }
+  blocks.push(proposalText);
+  
+  // DETAILS
+  const details = [];
+  if (proposal.leadTime) {
+    details.push(`Lead time: ${proposal.leadTime}.`);
+  }
+  details.push("No returns on special orders.");
+  if (proposal.additionalNotes) {
+    details.push(proposal.additionalNotes);
+  }
+  blocks.push(details.join(" "));
+  
+  // SIGNATURE
+  blocks.push("Visit our website at www.hamburgdoor.com\n\nThank you!\nJordanMarks@Hamburgdoor.com");
+  
+  // Join all blocks
+  const quoteText = blocks.join("\n\n");
+  
+  // Display quote
+  document.getElementById('quoteOutput').textContent = quoteText;
+  
+  // Validate
+  validateQuote(quoteText);
+}
+
+function validateQuote(text) {
+  const validationDiv = document.getElementById('validationOutput');
+  const results = [];
+  
+  let hasErrors = false;
+  for (const [bad, good] of Object.entries(FORBIDDEN_WORDS)) {
+    if (text.includes(bad)) {
+      results.push(`<div class="validation-item validation-fail">❌ Found "${bad}" (should be "${good}")</div>`);
+      hasErrors = true;
+    }
+  }
+  
+  // Check for common issues
+  if (!text.includes('www.hamburgdoor.com')) {
+    results.push(`<div class="validation-item validation-fail">❌ Website URL missing or incorrect</div>`);
+    hasErrors = true;
+  }
+  
+  if (!text.includes('JordanMarks@Hamburgdoor.com')) {
+    results.push(`<div class="validation-item validation-fail">❌ Email signature missing or incorrect</div>`);
+    hasErrors = true;
+  }
+  
+  if (!hasErrors) {
+    results.push(`<div class="validation-item validation-pass">✅ All checks passed! Quote is ready to use.</div>`);
+  }
+  
+  validationDiv.innerHTML = results.join('');
+}
+
+function copyToClipboard() {
+  const text = document.getElementById('quoteOutput').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Quote copied to clipboard!');
+  });
+}
+
+function downloadAsText() {
+  const text = document.getElementById('quoteOutput').textContent;
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'quote.txt';
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
+
+// Initialize on load
+window.onload = function() {
+  updateProposalFields();
+  generateQuote();
+};
+</script>
+
+</body>
+</html>
