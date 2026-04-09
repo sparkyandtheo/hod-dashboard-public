@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HOD Automation — System Map</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1923; color: #e0e8f0; min-height: 100vh; }
+
+  /* ── Header ── */
+  .header { background: linear-gradient(135deg, #0a1520 0%, #162030 100%); border-bottom: 2px solid #e8a020; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .header-left { display: flex; align-items: center; gap: 18px; }
+  .header-logo { height: 52px; object-fit: contain; }
+  .header-logo-fallback { font-size: 22px; font-weight: 800; color: #e8a020; display: none; }
+  .header-title h1 { font-size: 20px; font-weight: 700; color: #fff; }
+  .header-title p { font-size: 12px; color: #7a9ab8; margin-top: 2px; }
+  .header-right { text-align: right; }
+  .updated { font-size: 12px; color: #7a9ab8; }
+  .back-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 13px; color: #e8a020; text-decoration: none; font-weight: 600; }
+  .back-link:hover { color: #ffcc60; }
+
+  /* ── Layout ── */
+  .main { padding: 28px 32px; max-width: 1300px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #7a9ab8; margin-bottom: 14px; margin-top: 32px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: #1e3045; }
+  .section-label:first-child { margin-top: 0; }
+
+  /* ── Module cards ── */
+  .module { background: #162030; border: 1px solid #1e3045; border-radius: 12px; padding: 22px 24px; margin-bottom: 20px; }
+  .module-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+  .module-name { font-size: 16px; font-weight: 700; color: #fff; }
+  .module-file { font-size: 12px; color: #4a7088; font-family: 'SF Mono', 'Fira Code', monospace; background: #0f1923; padding: 2px 8px; border-radius: 4px; }
+  .module-status { font-size: 12px; font-weight: 600; margin-left: auto; }
+  .module-status.running { color: #2ecc90; }
+  .module-status.paused { color: #f1c40f; }
+
+  /* ── Tables ── */
+  .map-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  .map-table th { text-align: left; font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #4a7088; padding: 6px 12px; border-bottom: 1px solid #1e3045; }
+  .map-table td { padding: 9px 12px; border-bottom: 1px solid #111e2a; color: #a0b8cc; vertical-align: top; line-height: 1.5; }
+  .map-table tr:last-child td { border-bottom: none; }
+  .map-table td:first-child { color: #c0d0e0; font-weight: 600; white-space: nowrap; }
+  .map-table td code { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 11px; color: #5aabf0; background: #0f1923; padding: 1px 5px; border-radius: 3px; }
+  .map-table .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .badge.green { background: #1a3a20; color: #2ecc90; }
+  .badge.yellow { background: #3a3010; color: #f1c40f; }
+  .badge.blue { background: #101e30; color: #5aabf0; }
+  .badge.purple { background: #2a1a3a; color: #aa60f0; }
+
+  /* ── Sub-section within module ── */
+  .sub-label { font-size: 11px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: #e8a020; margin: 16px 0 8px; padding-bottom: 5px; border-bottom: 1px solid #1e3045; }
+
+  /* ── Flow stage pills ── */
+  .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 4px 0 12px; }
+  .flow-step { background: #0f1923; border: 1px solid #1e3045; border-radius: 6px; padding: 6px 12px; font-size: 12px; color: #a0b8cc; white-space: nowrap; }
+  .flow-arrow { color: #2a4a6b; padding: 0 6px; font-size: 14px; }
+
+  /* ── Asset grid ── */
+  .asset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 8px; }
+  .asset-card { background: #0f1923; border: 1px solid #1e3045; border-radius: 10px; padding: 14px 16px; }
+  .asset-card .asset-name { font-size: 13px; font-weight: 700; color: #c0d0e0; margin-bottom: 6px; }
+  .asset-card .asset-detail { font-size: 12px; color: #4a7088; line-height: 1.6; }
+  .asset-card .asset-detail span { color: #7a9ab8; }
+
+  /* ── Unlock cards ── */
+  .unlock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; margin-bottom: 8px; }
+  .unlock-card { background: #0f1923; border: 1px solid #1e3045; border-radius: 10px; padding: 14px 16px; }
+  .unlock-card .unlock-title { font-size: 13px; font-weight: 700; color: #e8a020; margin-bottom: 5px; }
+  .unlock-card .unlock-desc { font-size: 12px; color: #4a7088; line-height: 1.5; }
+
+  /* ── Footer ── */
+  .footer { text-align: center; padding: 22px; font-size: 12px; color: #3a5068; border-top: 1px solid #1e3045; margin-top: 12px; }
+  .footer span { color: #4a7088; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-left">
+    <img class="header-logo" src="https://hamburgdoor.com/wp-content/uploads/2021/01/HOD_LogoFull_Color.png" alt="Hamburg Overhead Door"
+         onerror="this.style.display='none';document.getElementById('lf').style.display='block'">
+    <span class="header-logo-fallback" id="lf">HOD</span>
+    <div class="header-title">
+      <h1>Automation — System Map</h1>
+      <p>Hamburg Overhead Door — Internal Use</p>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="updated">Updated: April 09, 2026 10:21 AM</div>
+    <a class="back-link" href="index.html">← Back to Dashboard</a>
+  </div>
+</header>
+
+<main class="main">
+
+  <!-- ══════════════════════════════════════════════
+       FOUNDATION
+  ══════════════════════════════════════════════ -->
+  <div class="section-label">🧱 Foundation Layer</div>
+
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Credential Loader</div>
+      <div class="module-file">scripts/lib/config.py</div>
+    </div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:14px;">Single source of truth for all credentials. Every other module imports from here. Reads from <code style="font-family:monospace;font-size:11px;color:#5aabf0;background:#0f1923;padding:1px 5px;border-radius:3px;">~/.openclaw/workspace/.api_keys</code>.</p>
+    <table class="map-table">
+      <thead><tr><th>Export</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Claude AI API</td></tr>
+        <tr><td><code>TELEGRAM_BOT_TOKEN</code></td><td>Telegram bot</td></tr>
+        <tr><td><code>DB_SERVER / DB_USER / DB_PASSWORD</code></td><td>HOD SQL Server (192.168.1.15)</td></tr>
+        <tr><td><code>SMB_USER / SMB_PASSWORD</code></td><td>Network file shares</td></tr>
+        <tr><td><code>TWILIO_ACCOUNT_SID / AUTH_TOKEN</code></td><td>SMS &amp; calls (pending 10DLC)</td></tr>
+        <tr><td><code>META_HOD_PAGE_TOKEN</code></td><td>Facebook / Instagram</td></tr>
+        <tr><td><code>GOOGLE_PLACES_API_KEY</code></td><td>Google Reviews</td></tr>
+        <tr><td><code>db_connect(database)</code></td><td>Returns live SQL connection (hod / wny / bgds)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Scheduling Rules</div>
+      <div class="module-file">scripts/hod/hours.py</div>
+    </div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:14px;">Defines all HOD business hours and appointment logic. No other script hardcodes scheduling rules — they all import from here.</p>
+    <table class="map-table">
+      <thead><tr><th>Function</th><th>Reads</th><th>Returns</th></tr></thead>
+      <tbody>
+        <tr><td><code>is_sales_day(date)</code></td><td>Local rules</td><td>True if Mon–Fri</td></tr>
+        <tr><td><code>is_showroom_open(datetime)</code></td><td>Local rules</td><td>True if M–F 8–5 / Sat 9–12</td></tr>
+        <tr><td><code>open_sales_slots(rep_fwork, lead_zip)</code></td><td>SQL TicketO + Unavailable</td><td>Ranked open slots</td></tr>
+        <tr><td><code>slots_conflict(slot, booked, blocks)</code></td><td>Both TicketO and Unavailable</td><td>True / False</td></tr>
+        <tr><td><code>format_slot(slot_dt)</code></td><td>—</td><td>"Monday, April 13 at 12:00 PM"</td></tr>
+      </tbody>
+    </table>
+    <div class="sub-label">Hours Defined Here</div>
+    <table class="map-table">
+      <tbody>
+        <tr><td>Sales appointments</td><td>Mon–Fri only · slots at 8, 10, 12, 2, 4, 4:30 PM</td></tr>
+        <tr><td>Showroom / Parts</td><td>M–F 8–5, Sat 9–12</td></tr>
+        <tr><td>Service / Installs</td><td>M–F regular</td></tr>
+        <tr><td>Residential emergency</td><td>Sat 9–12 only</td></tr>
+        <tr><td>Commercial emergency</td><td>24/7</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       ACTIVE MODULES
+  ══════════════════════════════════════════════ -->
+  <div class="section-label">⚙️ Active Modules</div>
+
+  <!-- Estimator Bot -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Estimator Bot — Lead Pipeline</div>
+      <div class="module-file">scripts/hod/estimator-bot.py</div>
+      <div class="module-status paused">⏸ Paused — Testing</div>
+    </div>
+
+    <div class="sub-label">Inbound</div>
+    <table class="map-table">
+      <thead><tr><th>Function</th><th>Reads from</th></tr></thead>
+      <tbody>
+        <tr><td><code>search_estimator_emails()</code></td><td>Gmail william@ — filtered to ThreeSixty only</td></tr>
+        <tr><td><code>parse_customer_data()</code></td><td>Claude Haiku — extracts name, email, phone, ZIP</td></tr>
+        <tr><td><code>search_customer_by_email/name/address()</code></td><td>SQL hod.Rol</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-label">Two-Stage Customer Flow</div>
+    <div class="flow">
+      <div class="flow-step">📩 New lead arrives</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Stage 1: "What days work for you?"</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Customer replies</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Stage 2: Propose slot</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Confirmed → TS10 ticket</div>
+    </div>
+
+    <div class="sub-label">Routing &amp; Scheduling</div>
+    <table class="map-table">
+      <thead><tr><th>Function</th><th>Does</th></tr></thead>
+      <tbody>
+        <tr><td><code>get_territory(zip)</code></td><td>Maps ZIP → Chuck Sherry (west) or Mario Umbach (east)</td></tr>
+        <tr><td><code>find_best_slot(rep, zip)</code></td><td>Calls <code>hours.open_sales_slots()</code> — checks TicketO + Unavailable</td></tr>
+        <tr><td><code>find_next_slot_excluding()</code></td><td>Same, skips already-proposed slots</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-label">AI Classification (sandboxed against injection)</div>
+    <table class="map-table">
+      <thead><tr><th>Task</th><th>Model</th><th>Output</th></tr></thead>
+      <tbody>
+        <tr><td>Parse lead email</td><td>Claude Haiku</td><td>name, email, phone, ZIP</td></tr>
+        <tr><td>Detect opt-out vs. availability</td><td>Claude Haiku</td><td>opt_out / providing_availability / unclear</td></tr>
+        <tr><td>Detect confirmation</td><td>Claude Haiku</td><td>confirmed / declined / reschedule</td></tr>
+        <tr><td>Extract address / access info</td><td>Claude Haiku</td><td>address, phone, gate codes</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-label">CRM Writes</div>
+    <table class="map-table">
+      <thead><tr><th>What</th><th>SQL Table</th></tr></thead>
+      <tbody>
+        <tr><td>New customer</td><td>Rol (×2: Type 0 + Type 4)</td></tr>
+        <tr><td>Account record</td><td>Owner</td></tr>
+        <tr><td>Location record</td><td>Loc</td></tr>
+        <tr><td>Sales call appointment</td><td>TicketO</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-label">CSA Escalation</div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:10px;">When the bot cannot resolve a lead automatically, it creates a CSA entry with all customer context + runbook guidance and alerts William via Telegram.</p>
+    <table class="map-table">
+      <thead><tr><th>Trigger</th><th>Runbook</th><th>Entry path</th></tr></thead>
+      <tbody>
+        <tr><td>Customer declines 3+ slots</td><td>A — Availability Mismatch</td><td><code>~/.csa-entries/EST-YYYY-MM-DD-xxx.json</code></td></tr>
+        <tr><td>No slots available in 21 days</td><td>B — Schedule Crisis</td><td><code>~/.csa-entries/EST-YYYY-MM-DD-xxx.json</code></td></tr>
+        <tr><td>Lost contact</td><td>C — Lost Contact</td><td><code>~/.csa-entries/EST-YYYY-MM-DD-xxx.json</code></td></tr>
+        <tr><td>Incomplete data</td><td>D — Incomplete Data</td><td><code>~/.csa-entries/EST-YYYY-MM-DD-xxx.json</code></td></tr>
+        <tr><td>Opt-out</td><td>E — Opt-Out Close</td><td><code>~/.csa-entries/EST-YYYY-MM-DD-xxx.json</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-label">Notifications &amp; State</div>
+    <table class="map-table">
+      <tbody>
+        <tr><td>New lead claim</td><td>Telegram → William &nbsp;·&nbsp; Google Chat → Meagan</td></tr>
+        <tr><td>Ticket created</td><td>Telegram → William</td></tr>
+        <tr><td>CSA escalation</td><td>Telegram → William with entry ID + runbook</td></tr>
+        <tr><td>State files</td><td><code>/tmp/estimator-bot-state.json</code> (processed IDs) &nbsp;·&nbsp; <code>/tmp/estimator-bot-pending.json</code> (active leads)</td></tr>
+        <tr><td>Drive log</td><td>estimator_leads_log.csv</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- LSA Bot -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">LSA Bot — Lead Classifier</div>
+      <div class="module-file">scripts/hod/lsa-bot.py</div>
+      <div class="module-status running">🟢 Running (systemd)</div>
+    </div>
+    <table class="map-table">
+      <thead><tr><th>Function</th><th>Reads</th><th>Writes</th></tr></thead>
+      <tbody>
+        <tr><td><code>search_lsa_emails()</code></td><td>Gmail servicerequestlsa@</td><td>—</td></tr>
+        <tr><td><code>classify_lead()</code></td><td>Claude Haiku</td><td>residential_sales / service_repair / commercial</td></tr>
+        <tr><td><code>extract_lead_info()</code></td><td>Claude Haiku</td><td>name, phone, address, issue</td></tr>
+        <tr><td><code>process_lsa_lead()</code></td><td>Gmail message</td><td>Auto-reply + Telegram alert</td></tr>
+      </tbody>
+    </table>
+    <div style="margin-top:10px;font-size:12px;color:#4a7088;">State: <code style="font-size:11px;color:#5aabf0;">/tmp/lsa-bot-state.json</code> &nbsp;·&nbsp; Drive log: lsa_leads_log.csv</div>
+  </div>
+
+  <!-- Dashboard -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Dashboard — Operations Intelligence</div>
+      <div class="module-file">scripts/hod/dashboard/generate.py</div>
+      <div class="module-status running">🟢 2am full / 8:30am + 1:30pm patches</div>
+    </div>
+    <table class="map-table">
+      <thead><tr><th>Module</th><th>Source</th><th>Refresh</th></tr></thead>
+      <tbody>
+        <tr><td>Attendance</td><td>Bill Geary's daily email</td><td>8:30am patch</td></tr>
+        <tr><td>Ariana service context</td><td>Airiana's morning email</td><td>8:30am patch</td></tr>
+        <tr><td>Install schedule</td><td>SQL hod.TicketO</td><td>2am full</td></tr>
+        <tr><td>Service schedule</td><td>SQL hod.TicketO</td><td>2am full</td></tr>
+        <tr><td>Bid pipeline</td><td>SQL hod.TicketO (Est &gt; 0)</td><td>2am full</td></tr>
+        <tr><td>Operations trends</td><td>SQL hod.TicketO + Job</td><td>2am full</td></tr>
+        <tr><td>Fleet efficiency</td><td>Verizon CSV (via daily email)</td><td>2am full</td></tr>
+        <tr><td>Fuel pricing</td><td>GasPrices API</td><td>2am full</td></tr>
+        <tr><td>LSA traffic</td><td>State file</td><td>1:30pm patch</td></tr>
+        <tr><td>Sales calls</td><td>SQL hod.TicketO SALESCALL</td><td>2am full</td></tr>
+        <tr><td>Autodialer</td><td>Hover Networks call recordings</td><td>8am + 4pm</td></tr>
+      </tbody>
+    </table>
+    <div class="sub-label">Outputs</div>
+    <table class="map-table">
+      <tbody>
+        <tr><td>F-Drive</td><td><code>~/hod_share/Jen/Dashboard/index.html</code> — refreshed silently every 30min</td></tr>
+        <tr><td>Public</td><td>GitHub → Netlify auto-deploy · <a href="https://inquisitive-entremet-9ef571.netlify.app/" style="color:#5aabf0;">inquisitive-entremet-9ef571.netlify.app</a></td></tr>
+        <tr><td>Notifications</td><td>Google Chat DM to Jen at 8:30am and 1:30pm (scheduled runs only)</td></tr>
+        <tr><td>Drive log</td><td>dashboard_runs_log.csv</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Nightly Extract -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Nightly Extract</div>
+      <div class="module-file">scripts/hod/nightly_extract.py</div>
+      <div class="module-status running">🟢 2:30am daily</div>
+    </div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:14px;">Incremental shadow copy of all three SQL databases. Writes to Google Drive CIPHER/Data/ as portable CSVs — queryable independently, no production DB impact. 900K+ rows and growing.</p>
+    <table class="map-table">
+      <tbody>
+        <tr><td>Reads</td><td>SQL hod, wny, bgds — all three servers</td></tr>
+        <tr><td>Writes</td><td>Drive CIPHER/Data/ — CSV per table, incremental delta only</td></tr>
+        <tr><td>Purpose</td><td>CRM migration path · historical analytics · legacy independence</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TicketPic Export -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">TicketPic Export</div>
+      <div class="module-file">scripts/hod/ticketpic_export.py</div>
+      <div class="module-status running">🟢 Every 5 min</div>
+    </div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:14px;">Bypasses broken Crystal Reports photo converter. Pulls blobs from SQL, writes to F-Drive + HOD-EDGE so TS10 View button works.</p>
+    <table class="map-table">
+      <tbody>
+        <tr><td>Reads</td><td>SQL hod.TFMPicture — new PicIDs since last run</td></tr>
+        <tr><td>Writes</td><td><code>~/hod-edge-shared/</code> (HOD-EDGE, C:\TS_Pictures) · <code>~/hod_share/AirianasPhotos/</code></td></tr>
+        <tr><td>State</td><td><code>/tmp/ticketpic-export-state.json</code> — tracks last exported PicID</td></tr>
+        <tr><td>Drive log</td><td>ticketpic_export_log.csv</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Drive Logger -->
+  <div class="module">
+    <div class="module-header">
+      <div class="module-name">Drive Logger</div>
+      <div class="module-file">scripts/hod/drive_logger.py</div>
+    </div>
+    <p style="font-size:13px;color:#7a9ab8;margin-bottom:14px;">Appends one row per event to a Google Drive CSV. Fire-and-forget — never blocks the main process. All logs are in CIPHER/Logs/, shared with Jen.</p>
+    <table class="map-table">
+      <thead><tr><th>Function</th><th>Appends to</th></tr></thead>
+      <tbody>
+        <tr><td><code>log_estimator_lead()</code></td><td>estimator_leads_log.csv</td></tr>
+        <tr><td><code>log_lsa_lead()</code></td><td>lsa_leads_log.csv</td></tr>
+        <tr><td><code>log_sales_calls()</code></td><td>sales_calls_log.csv</td></tr>
+        <tr><td><code>log_installs()</code></td><td>installs_log.csv</td></tr>
+        <tr><td><code>log_trends()</code></td><td>trends_log.csv</td></tr>
+        <tr><td><code>log_backup()</code></td><td>backup_log.csv</td></tr>
+        <tr><td><code>log_dashboard_run()</code></td><td>dashboard_runs_log.csv</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       EXTERNAL ASSETS
+  ══════════════════════════════════════════════ -->
+  <div class="section-label">🔌 External Asset Summary</div>
+
+  <div class="asset-grid">
+    <div class="asset-card">
+      <div class="asset-name">HOD SQL Server</div>
+      <div class="asset-detail">
+        <span>192.168.1.15</span> · hod, wny, bgds<br>
+        Connected to: estimator-bot, hours, ticketpic, dashboard, nightly extract<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.DB_*</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Gmail API</div>
+      <div class="asset-detail">
+        Connected to: estimator-bot, lsa-bot, dashboard, monitors<br>
+        Auth: OAuth (gog)
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Google Chat API</div>
+      <div class="asset-detail">
+        Connected to: estimator-bot, dashboard, chat-monitor<br>
+        Auth: OAuth (gog)
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Google Drive API</div>
+      <div class="asset-detail">
+        Connected to: drive_logger, nightly extract<br>
+        Auth: OAuth (gog)
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Claude Haiku</div>
+      <div class="asset-detail">
+        Connected to: estimator-bot, lsa-bot<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.ANTHROPIC_API_KEY</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Telegram Bot</div>
+      <div class="asset-detail">
+        Connected to: estimator-bot, all personal scripts, CSA escalations<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.TELEGRAM_BOT_TOKEN</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">SMB — 192.168.1.15\shared</div>
+      <div class="asset-detail">
+        Connected to: ticketpic (thumbnails), dashboard output<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.SMB_*</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">SMB — 192.168.1.208\Pictures2</div>
+      <div class="asset-detail">
+        Connected to: ticketpic (TS10 View button source)<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.SMB_*</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Twilio <span class="badge yellow">Pending 10DLC</span></div>
+      <div class="asset-detail">
+        <code style="font-size:11px;color:#5aabf0;">scripts/lib/twilio_client.py</code> — available, pending registration<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">~/.twilio_creds</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Meta Graph API <span class="badge yellow">Pending</span></div>
+      <div class="asset-detail">
+        <code style="font-size:11px;color:#5aabf0;">scripts/hod/meta_post.py</code> — available, pending approval<br>
+        Auth: <code style="font-size:11px;color:#5aabf0;">config.META_*</code>
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">Verizon Fleet CSV</div>
+      <div class="asset-detail">
+        Connected to: fleet_tracking.py — via daily email attachment<br>
+        Auth: Email
+      </div>
+    </div>
+    <div class="asset-card">
+      <div class="asset-name">GitHub + Netlify</div>
+      <div class="asset-detail">
+        Dashboard public deploy — auto-deploys on push<br>
+        Auth: SSH key / CI-CD
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       WHAT THIS UNLOCKS
+  ══════════════════════════════════════════════ -->
+  <div class="section-label">🚀 What This Unlocks</div>
+  <p style="font-size:13px;color:#4a7088;margin-bottom:16px;">Every new capability is built from existing connections. No new infrastructure required.</p>
+
+  <div class="unlock-grid">
+    <div class="unlock-card">
+      <div class="unlock-title">After-Hours Web Service Intake</div>
+      <div class="unlock-desc">Estimator bot + hours.py + TicketO write</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Spring Maintenance Campaign</div>
+      <div class="unlock-desc">SQL customer list + send_email() + Twilio</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">LSA Lead by Location</div>
+      <div class="unlock-desc">lsa-bot state + dashboard module</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">WNY / BGDS Full Dashboards</div>
+      <div class="unlock-desc">Same SQL pattern, different database name</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Automated Transformation Tuesday</div>
+      <div class="unlock-desc">Gmail attachment reader + meta_post.py</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Automated Review Requests</div>
+      <div class="unlock-desc">Post-install ticket close → send_email() to customer</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Estimator Follow-Up Sequences</div>
+      <div class="unlock-desc">Pending lead state + scheduled email cadence</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Sales Call No-Show Recovery</div>
+      <div class="unlock-desc">TicketO status + send_email() re-engage</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Repeat Customer Detection</div>
+      <div class="unlock-desc">Rol email match → personalized outreach</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Warranty Expiry Alerts</div>
+      <div class="unlock-desc">Job table date field → proactive customer email</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Modern CRM Migration</div>
+      <div class="unlock-desc">Nightly extract building portable copy — 900K+ rows and growing</div>
+    </div>
+    <div class="unlock-card">
+      <div class="unlock-title">Historical Trend Analysis</div>
+      <div class="unlock-desc">Shadow copy queryable independently — full service/quote/invoice history</div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">Hamburg Overhead Door &nbsp;|&nbsp; Internal Use Only &nbsp;|&nbsp; Generated by <span>Cipher ⚙️</span></footer>
+</body>
+</html>
