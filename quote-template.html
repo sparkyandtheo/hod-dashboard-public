@@ -136,23 +136,23 @@
       <h2>Customer Information</h2>
       
       <div class="form-group">
-        <label>Customer Name</label>
-        <input type="text" id="customerName" placeholder="e.g., MARIA KOSE" value="MARIA KOSE">
+        <label>Customer Name <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="customerName" placeholder="e.g., MARIA KOSE" value="MARIA KOSE" required>
       </div>
       
       <div class="form-group">
-        <label>Phone Number</label>
-        <input type="text" id="customerPhone" placeholder="e.g., (716) 674-0268" value="(716) 674-0268">
+        <label>Phone Number <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="customerPhone" placeholder="e.g., (716) 674-0268" value="(716) 674-0268" required>
       </div>
       
       <div class="form-group">
-        <label>Street Address</label>
-        <input type="text" id="customerAddress" placeholder="e.g., 5306 SENECA ST" value="5306 SENECA ST WEST SENECA NY 14224">
+        <label>Street Address <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="customerAddress" placeholder="e.g., 5306 SENECA ST" value="5306 SENECA ST WEST SENECA NY 14224" required>
       </div>
       
       <div class="form-group">
-        <label>Direction/Area Notes</label>
-        <input type="text" id="siteDirection" placeholder="e.g., OFF TRANSIT RD" value="OFF TRANSIT RD">
+        <label>Direction/Area Notes <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="siteDirection" placeholder="e.g., OFF TRANSIT RD" value="OFF TRANSIT RD" required>
       </div>
     </div>
 
@@ -161,28 +161,28 @@
       <h2>Site Information</h2>
       
       <div class="form-group">
-        <label>Survey Date</label>
-        <input type="text" id="siteDate" placeholder="e.g., 2026-04-03" value="2026-04-03">
+        <label>Survey Date <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="siteDate" placeholder="e.g., 2026-04-03" value="2026-04-03" required>
       </div>
       
       <div class="form-group">
-        <label>Technician Name</label>
-        <input type="text" id="techName" placeholder="e.g., BEN" value="BEN">
+        <label>Technician Name <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="techName" placeholder="e.g., BEN" value="BEN" required>
       </div>
       
       <div class="form-group">
-        <label>Door Size (or N/A if opener-only)</label>
-        <input type="text" id="doorSize" placeholder="e.g., 16×7" value="16×7">
+        <label>Door Size (or N/A if opener-only) <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="doorSize" placeholder="e.g., 16×7" value="16×7" required>
       </div>
       
       <div class="form-group">
-        <label>Track Radius</label>
-        <input type="text" id="trackRadius" placeholder="e.g., 15 inches" value="15 inches">
+        <label>Track Radius <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="trackRadius" placeholder="e.g., 15 inches" value="15 inches" required>
       </div>
       
       <div class="form-group">
-        <label>Jamb Condition</label>
-        <input type="text" id="jambCondition" placeholder="e.g., flush wood" value="flush wood">
+        <label>Jamb Condition <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="jambCondition" placeholder="e.g., flush wood" value="flush wood" required>
       </div>
     </div>
   </div>
@@ -193,8 +193,9 @@
       <h2>Proposal Details</h2>
       
       <div class="form-group">
-        <label>Job Type</label>
-        <select id="jobType" onchange="updateProposalFields()">
+        <label>Job Type <span style="color: #ff887c;">*</span></label>
+        <select id="jobType" onchange="updateProposalFields()" required>
+          <option value="">-- SELECT JOB TYPE --</option>
           <option value="DOOR_ONLY">Door Only</option>
           <option value="OPENER_ONLY" selected>Opener Only</option>
           <option value="DOOR_OPENER">Door + Opener</option>
@@ -204,23 +205,23 @@
       </div>
       
       <div class="form-group" id="doorModelGroup" style="display:none;">
-        <label>Door Model</label>
-        <input type="text" id="doorModel" placeholder="e.g., CLOPAY MODEL 5000">
+        <label>Door Model <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="doorModel" placeholder="e.g., CLOPAY MODEL 5000" required>
       </div>
       
       <div class="form-group">
-        <label>Opener Model (or Parts Description)</label>
-        <input type="text" id="openerModel" placeholder="e.g., 7' LIFTMASTER 2220L with 1 remote" value="7' LIFTMASTER 2220L with 1 remote">
+        <label>Opener Model (or Parts Description) <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="openerModel" placeholder="e.g., 7' LIFTMASTER 2220L with 1 remote" value="7' LIFTMASTER 2220L with 1 remote" required>
       </div>
       
       <div class="form-group">
-        <label>Lead Time</label>
-        <input type="text" id="leadTime" placeholder="e.g., 2 to 10 days" value="2 to 10 days">
+        <label>Lead Time <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="leadTime" placeholder="e.g., 2 to 10 days" value="2 to 10 days" required>
       </div>
       
       <div class="form-group">
-        <label>Additional Notes (optional)</label>
-        <textarea id="additionalNotes" placeholder="e.g., No service charge today."></textarea>
+        <label>Additional Notes <span style="color: #ff887c;">*</span></label>
+        <textarea id="additionalNotes" placeholder="e.g., No service charge today." required></textarea>
       </div>
     </div>
 
@@ -232,13 +233,14 @@
       </div>
       
       <div class="form-group" style="margin-top: 12px;">
-        <label>Current Condition / Issue</label>
-        <textarea id="currentCondition" placeholder="e.g., Old 1355 LM chain-drive opener not responding">Old 1355 LM chain-drive opener not responding</textarea>
+        <label>Current Condition / Issue <span style="color: #ff887c;">*</span></label>
+        <textarea id="currentCondition" placeholder="e.g., Old 1355 LM chain-drive opener not responding" required>Old 1355 LM chain-drive opener not responding</textarea>
       </div>
       
       <div class="form-group">
-        <label>Photos Attached?</label>
-        <select id="hasPhotos">
+        <label>Photos Attached? <span style="color: #ff887c;">*</span></label>
+        <select id="hasPhotos" required>
+          <option value="">-- SELECT --</option>
           <option value="no">No</option>
           <option value="yes">Yes</option>
         </select>
@@ -294,29 +296,61 @@ function updateProposalFields() {
 }
 
 function generateQuote() {
+  // Validate all required fields
+  const requiredFields = [
+    'customerName', 'customerPhone', 'customerAddress', 'siteDirection',
+    'siteDate', 'techName', 'doorSize', 'trackRadius', 'jambCondition',
+    'jobType', 'openerModel', 'leadTime', 'additionalNotes', 'currentCondition', 'hasPhotos'
+  ];
+  
+  const missingFields = [];
+  for (const fieldId of requiredFields) {
+    const field = document.getElementById(fieldId);
+    const value = field.value.trim();
+    if (!value) {
+      missingFields.push(field.previousElementSibling.textContent.replace(' *', ''));
+      field.style.borderColor = '#ff887c';
+    } else {
+      field.style.borderColor = '#1e3045';
+    }
+  }
+  
+  if (missingFields.length > 0) {
+    alert(`❌ Missing required fields:\n\n• ${missingFields.join('\n• ')}\n\nPlease fill out all fields before generating.`);
+    return;
+  }
+  
+  // Check if door model is required
+  const jobType = document.getElementById('jobType').value;
+  if ((jobType === 'DOOR_ONLY' || jobType === 'DOOR_OPENER' || jobType === 'COMMERCIAL') && !document.getElementById('doorModel').value.trim()) {
+    alert('❌ Door Model is required for this job type.');
+    document.getElementById('doorModel').style.borderColor = '#ff887c';
+    return;
+  }
+  
   const customer = {
-    name: document.getElementById('customerName').value,
-    phone: document.getElementById('customerPhone').value,
-    address: document.getElementById('customerAddress').value,
+    name: document.getElementById('customerName').value.trim(),
+    phone: document.getElementById('customerPhone').value.trim(),
+    address: document.getElementById('customerAddress').value.trim(),
   };
   
   const site = {
-    direction: document.getElementById('siteDirection').value,
-    date: document.getElementById('siteDate').value,
-    tech: document.getElementById('techName').value,
-    doorSize: document.getElementById('doorSize').value,
-    trackRadius: document.getElementById('trackRadius').value,
-    jambs: document.getElementById('jambCondition').value,
-    currentCondition: document.getElementById('currentCondition').value,
+    direction: document.getElementById('siteDirection').value.trim(),
+    date: document.getElementById('siteDate').value.trim(),
+    tech: document.getElementById('techName').value.trim(),
+    doorSize: document.getElementById('doorSize').value.trim(),
+    trackRadius: document.getElementById('trackRadius').value.trim(),
+    jambs: document.getElementById('jambCondition').value.trim(),
+    currentCondition: document.getElementById('currentCondition').value.trim(),
     hasPhotos: document.getElementById('hasPhotos').value === 'yes',
   };
   
   const proposal = {
-    jobType: document.getElementById('jobType').value,
-    doorModel: document.getElementById('doorModel').value,
-    openerModel: document.getElementById('openerModel').value,
-    leadTime: document.getElementById('leadTime').value,
-    additionalNotes: document.getElementById('additionalNotes').value,
+    jobType: jobType,
+    doorModel: document.getElementById('doorModel').value.trim(),
+    openerModel: document.getElementById('openerModel').value.trim(),
+    leadTime: document.getElementById('leadTime').value.trim(),
+    additionalNotes: document.getElementById('additionalNotes').value.trim(),
   };
   
   // Build blocks
