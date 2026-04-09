@@ -188,6 +188,54 @@
   </div>
 
   <div class="grid">
+    <!-- PRICING DATA -->
+    <div class="panel">
+      <h2>Materials & Pricing</h2>
+      
+      <div id="materialItems"></div>
+      
+      <button class="button" style="width: 100%; margin-bottom: 12px;" onclick="addMaterialItem()">+ Add Material</button>
+      
+      <hr style="border: none; border-top: 1px solid #1e3045; margin: 16px 0;">
+      
+      <div class="form-group">
+        <label>Labor Cost <span style="color: #ff887c;">*</span></label>
+        <input type="number" id="laborCost" placeholder="e.g., 500" value="0" min="0" step="0.01" required onchange="updateTotals()">
+      </div>
+      
+      <div class="form-group">
+        <label>Sales Tax Rate (%) <span style="color: #ff887c;">*</span></label>
+        <input type="number" id="taxRate" placeholder="e.g., 8.75" value="8.75" min="0" max="100" step="0.01" required onchange="updateTotals()">
+      </div>
+      
+      <hr style="border: none; border-top: 1px solid #1e3045; margin: 16px 0;">
+      
+      <div style="background: #0f1923; padding: 12px; border-radius: 6px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; font-size: 12px; margin-bottom: 8px;">
+          <div>
+            <div style="color: #7a9ab8; margin-bottom: 3px;">Materials Total</div>
+            <div id="materialsTotal" style="font-size: 16px; font-weight: 700; color: #2ecc90;">$0.00</div>
+          </div>
+          <div>
+            <div style="color: #7a9ab8; margin-bottom: 3px;">Labor Cost</div>
+            <div id="laborDisplay" style="font-size: 16px; font-weight: 700; color: #5aabf0;">$0.00</div>
+          </div>
+        </div>
+        <div style="border-top: 1px solid #1e3045; padding-top: 8px; margin-bottom: 8px;">
+          <div style="color: #7a9ab8; margin-bottom: 3px; font-size: 11px;">Subtotal</div>
+          <div id="subtotalDisplay" style="font-size: 18px; font-weight: 700; color: #fff;">$0.00</div>
+        </div>
+        <div style="border-top: 1px solid #1e3045; padding-top: 8px;">
+          <div style="color: #7a9ab8; margin-bottom: 3px; font-size: 11px;" id="taxLabel">Sales Tax (8.75%)</div>
+          <div id="taxDisplay" style="font-size: 18px; font-weight: 700; color: #ffb878;">$0.00</div>
+        </div>
+        <div style="border-top: 1px solid #1e3045; padding-top: 8px; margin-top: 8px;">
+          <div style="color: #7a9ab8; margin-bottom: 3px; font-size: 11px;">TOTAL</div>
+          <div id="totalDisplay" style="font-size: 20px; font-weight: 700; color: #e8a020;">$0.00</div>
+        </div>
+      </div>
+    </div>
+
     <!-- PROPOSAL DATA -->
     <div class="panel">
       <h2>Proposal Details</h2>
@@ -288,6 +336,76 @@ const FORBIDDEN_WORDS = {
   'FURNSH': 'FURNISH',
   'FURNIS': 'FURNISH',
 };
+
+let materialCounter = 0;
+
+function addMaterialItem() {
+  materialCounter++;
+  const container = document.getElementById('materialItems');
+  const itemId = `material-${materialCounter}`;
+  
+  const item = document.createElement('div');
+  item.id = itemId;
+  item.style.cssText = 'background: #0f1923; border: 1px solid #1e3045; border-radius: 6px; padding: 12px; margin-bottom: 12px;';
+  
+  item.innerHTML = `
+    <div style="display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: 8px; align-items: end;">
+      <div>
+        <label style="font-size: 11px; color: #7a9ab8; display: block; margin-bottom: 4px;">Description</label>
+        <input type="text" class="material-desc" placeholder="e.g., CLOPAY MODEL 5000" style="width: 100%; padding: 8px; background: #162030; border: 1px solid #1e3045; border-radius: 4px; color: #e0e8f0; font-size: 12px;" onchange="updateTotals()">
+      </div>
+      <div>
+        <label style="font-size: 11px; color: #7a9ab8; display: block; margin-bottom: 4px;">Qty</label>
+        <input type="number" class="material-qty" value="1" min="1" step="1" style="width: 100%; padding: 8px; background: #162030; border: 1px solid #1e3045; border-radius: 4px; color: #e0e8f0; font-size: 12px;" onchange="updateTotals()">
+      </div>
+      <div>
+        <label style="font-size: 11px; color: #7a9ab8; display: block; margin-bottom: 4px;">Unit Cost</label>
+        <input type="number" class="material-cost" value="0" min="0" step="0.01" style="width: 100%; padding: 8px; background: #162030; border: 1px solid #1e3045; border-radius: 4px; color: #e0e8f0; font-size: 12px;" onchange="updateTotals()">
+      </div>
+      <button style="background: #3a1010; color: #ff887c; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: 700; font-size: 11px;" onclick="removeMaterialItem('${itemId}')">Remove</button>
+    </div>
+  `;
+  
+  container.appendChild(item);
+}
+
+function removeMaterialItem(itemId) {
+  document.getElementById(itemId).remove();
+  updateTotals();
+}
+
+function updateTotals() {
+  // Calculate materials total
+  const materials = document.querySelectorAll('#materialItems > div');
+  let materialsTotal = 0;
+  
+  materials.forEach(item => {
+    const qty = parseFloat(item.querySelector('.material-qty').value) || 0;
+    const cost = parseFloat(item.querySelector('.material-cost').value) || 0;
+    materialsTotal += qty * cost;
+  });
+  
+  // Get labor cost
+  const laborCost = parseFloat(document.getElementById('laborCost').value) || 0;
+  
+  // Calculate subtotal
+  const subtotal = materialsTotal + laborCost;
+  
+  // Calculate tax
+  const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+  const tax = subtotal * (taxRate / 100);
+  
+  // Calculate total
+  const total = subtotal + tax;
+  
+  // Update display
+  document.getElementById('materialsTotal').textContent = '$' + materialsTotal.toFixed(2);
+  document.getElementById('laborDisplay').textContent = '$' + laborCost.toFixed(2);
+  document.getElementById('subtotalDisplay').textContent = '$' + subtotal.toFixed(2);
+  document.getElementById('taxLabel').textContent = `Sales Tax (${taxRate}%)`;
+  document.getElementById('taxDisplay').textContent = '$' + tax.toFixed(2);
+  document.getElementById('totalDisplay').textContent = '$' + total.toFixed(2);
+}
 
 function updateProposalFields() {
   const jobType = document.getElementById('jobType').value;
@@ -390,6 +508,49 @@ function generateQuote() {
   }
   blocks.push(proposalText);
   
+  // MATERIALS & PRICING
+  const pricingLines = [];
+  const materials = document.querySelectorAll('#materialItems > div');
+  
+  if (materials.length > 0) {
+    pricingLines.push("MATERIALS:");
+    materials.forEach(item => {
+      const desc = item.querySelector('.material-desc').value.trim();
+      const qty = parseFloat(item.querySelector('.material-qty').value) || 0;
+      const cost = parseFloat(item.querySelector('.material-cost').value) || 0;
+      const total = qty * cost;
+      if (desc) {
+        pricingLines.push(`  • ${desc} (Qty: ${qty} @ $${cost.toFixed(2)} ea.) = $${total.toFixed(2)}`);
+      }
+    });
+  }
+  
+  const laborCost = parseFloat(document.getElementById('laborCost').value) || 0;
+  if (laborCost > 0) {
+    pricingLines.push(`\nLABOR: $${laborCost.toFixed(2)}`);
+  }
+  
+  // Calculate totals
+  let materialsTotal = 0;
+  materials.forEach(item => {
+    const qty = parseFloat(item.querySelector('.material-qty').value) || 0;
+    const cost = parseFloat(item.querySelector('.material-cost').value) || 0;
+    materialsTotal += qty * cost;
+  });
+  
+  const subtotal = materialsTotal + laborCost;
+  const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+  const tax = subtotal * (taxRate / 100);
+  const total = subtotal + tax;
+  
+  pricingLines.push(`\nSUBTOTAL: $${subtotal.toFixed(2)}`);
+  pricingLines.push(`SALES TAX (${taxRate}%): $${tax.toFixed(2)}`);
+  pricingLines.push(`TOTAL PRICE: $${total.toFixed(2)}`);
+  
+  if (pricingLines.length > 0) {
+    blocks.push(pricingLines.join("\n"));
+  }
+  
   // DETAILS
   const details = [];
   if (proposal.leadTime) {
@@ -465,6 +626,7 @@ function downloadAsText() {
 // Initialize on load
 window.onload = function() {
   updateProposalFields();
+  addMaterialItem();  // Add one blank material item by default
   generateQuote();
 };
 </script>
