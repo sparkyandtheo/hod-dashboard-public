@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>HOD Installer Quote & Work Report</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { 
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+    background: #0f1923; 
+    color: #e0e8f0; 
+    min-height: 100vh;
+    padding: 16px;
+    padding-bottom: 40px;
+  }
+  
+  .container { max-width: 600px; margin: 0 auto; }
+  
+  .header { 
+    background: linear-gradient(135deg, #0a1520 0%, #162030 100%); 
+    border-bottom: 2px solid #e8a020; 
+    padding: 16px; 
+    margin-bottom: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .header h1 { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .header p { font-size: 12px; color: #7a9ab8; }
+  
+  .section { 
+    background: #162030; 
+    border: 1px solid #1e3045; 
+    border-radius: 8px; 
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .section h2 { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+  
+  .form-group { margin-bottom: 12px; }
+  label { display: block; font-size: 11px; font-weight: 600; color: #a0b8cc; margin-bottom: 4px; }
+  input, select, textarea { 
+    width: 100%; 
+    padding: 10px; 
+    background: #0f1923; 
+    border: 1px solid #1e3045; 
+    border-radius: 6px; 
+    color: #e0e8f0; 
+    font-family: inherit;
+    font-size: 13px;
+  }
+  textarea { height: 80px; resize: vertical; }
+  input:focus, select:focus, textarea:focus { 
+    outline: none; 
+    border-color: #e8a020;
+  }
+  
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  
+  .button {
+    background: #e8a020;
+    color: #0f1923;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 13px;
+    width: 100%;
+  }
+  .button:active { background: #ffcc60; }
+  
+  .button-secondary {
+    background: #5aabf0;
+    color: #0f1923;
+  }
+  
+  .button-danger {
+    background: #ff6b6b;
+    color: #fff;
+  }
+  
+  .item-card { 
+    background: #0f1923; 
+    border: 1px solid #1e3045; 
+    border-radius: 6px; 
+    padding: 12px; 
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .item-info { flex: 1; }
+  .item-name { font-size: 12px; font-weight: 600; color: #e0e8f0; }
+  .item-detail { font-size: 11px; color: #7a9ab8; }
+  
+  .item-amount { 
+    text-align: right; 
+    min-width: 80px;
+  }
+  .item-amount-label { font-size: 10px; color: #7a9ab8; }
+  .item-amount-value { font-size: 14px; font-weight: 700; color: #2ecc90; }
+  
+  .totals-box { 
+    background: #0f1923; 
+    border: 1px solid #1e3045; 
+    border-radius: 6px; 
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .total-row { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    font-size: 13px;
+    padding: 6px 0;
+    border-bottom: 1px solid #1e3045;
+  }
+  .total-row:last-child { border-bottom: none; margin-top: 6px; padding-top: 12px; border-top: 1px solid #1e3045; }
+  
+  .total-row-label { color: #7a9ab8; }
+  .total-row-value { font-weight: 700; color: #5aabf0; }
+  .total-row:last-child .total-row-label { color: #fff; font-weight: 700; }
+  .total-row:last-child .total-row-value { font-size: 16px; color: #e8a020; }
+  
+  .success-message { 
+    background: #1a3a20; 
+    border: 1px solid #2ecc90; 
+    color: #2ecc90; 
+    padding: 12px; 
+    border-radius: 6px; 
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 12px;
+  }
+  
+  .info-box { 
+    background: #0f1923; 
+    border-left: 3px solid #5aabf0; 
+    padding: 10px 12px; 
+    border-radius: 4px; 
+    font-size: 11px; 
+    color: #7a9ab8; 
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  
+  .tab-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .tab-button { 
+    padding: 10px; 
+    border: 1px solid #1e3045; 
+    background: #0f1923; 
+    color: #7a9ab8; 
+    border-radius: 6px; 
+    cursor: pointer; 
+    font-size: 12px;
+    font-weight: 600;
+  }
+  .tab-button.active { 
+    background: #e8a020; 
+    color: #0f1923; 
+    border-color: #e8a020;
+  }
+  
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+  
+  @media (max-width: 600px) {
+    body { padding: 12px; padding-bottom: 30px; }
+    .header { padding: 12px; }
+    .section { padding: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>📋 HOD Work Report & Quote</h1>
+    <p>Submit job completion, materials, and payment</p>
+  </div>
+
+  <div id="successMessage" class="success-message" style="display:none;"></div>
+
+  <!-- TAB BUTTONS -->
+  <div class="tab-buttons">
+    <button class="tab-button active" onclick="switchTab('job')">Job Info</button>
+    <button class="tab-button" onclick="switchTab('work')">Work & Payment</button>
+  </div>
+
+  <!-- TAB 1: JOB INFO -->
+  <div id="jobTab" class="tab-content active">
+    <div class="section">
+      <h2>📍 Job Information</h2>
+      
+      <div class="form-group">
+        <label>Work Order / Ticket # <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="ticketNumber" placeholder="e.g., 419438" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Customer Name <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="customerName" placeholder="e.g., MARIA KOSE" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Address <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="address" placeholder="e.g., 5306 SENECA ST" required>
+      </div>
+      
+      <div class="row">
+        <div class="form-group">
+          <label>Date Completed <span style="color: #ff887c;">*</span></label>
+          <input type="date" id="dateCompleted" required>
+        </div>
+        <div class="form-group">
+          <label>Time Completed <span style="color: #ff887c;">*</span></label>
+          <input type="time" id="timeCompleted" required>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>🔧 Work Performed</h2>
+      
+      <div class="form-group">
+        <label>Work Description <span style="color: #ff887c;">*</span></label>
+        <textarea id="workDescription" placeholder="e.g., Installed new CLOPAY 16x7 door with LIFTMASTER opener. All hardware secured. Door operates smoothly." required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Issues Encountered (if any)</label>
+        <textarea id="issues" placeholder="e.g., None" value="None"></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label>Technician Name <span style="color: #ff887c;">*</span></label>
+        <input type="text" id="technicianName" placeholder="e.g., BEN" required>
+      </div>
+      
+      <button class="button button-secondary" onclick="switchTab('work')">Next: Payment →</button>
+    </div>
+  </div>
+
+  <!-- TAB 2: WORK & PAYMENT -->
+  <div id="workTab" class="tab-content">
+    <div class="section">
+      <h2>💰 Materials & Labor</h2>
+      
+      <div id="materialsList"></div>
+      
+      <button class="button button-secondary" style="margin-bottom: 12px;" onclick="addMaterialLine()">+ Add Material</button>
+      
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label>Labor Hours <span style="color: #ff887c;">*</span></label>
+        <input type="number" id="laborHours" placeholder="e.g., 3.5" min="0" step="0.5" value="0" required onchange="updatePaymentTotals()">
+      </div>
+      
+      <div class="form-group">
+        <label>Hourly Labor Rate ($) <span style="color: #ff887c;">*</span></label>
+        <input type="number" id="laborRate" placeholder="e.g., 75" min="0" step="0.01" value="0" required onchange="updatePaymentTotals()">
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>💵 Payment Summary</h2>
+      
+      <div class="totals-box">
+        <div class="total-row">
+          <span class="total-row-label">Materials:</span>
+          <span class="total-row-value" id="materialsTotal">$0.00</span>
+        </div>
+        <div class="total-row">
+          <span class="total-row-label">Labor (<span id="hoursDisplay">0</span>h @ $<span id="rateDisplay">0</span>/h):</span>
+          <span class="total-row-value" id="laborTotal">$0.00</span>
+        </div>
+        <div class="total-row">
+          <span class="total-row-label">TOTAL DUE:</span>
+          <span class="total-row-value" id="grandTotal">$0.00</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method <span style="color: #ff887c;">*</span></label>
+        <select id="paymentMethod" required>
+          <option value="">-- SELECT --</option>
+          <option value="cash">Cash</option>
+          <option value="check">Check</option>
+          <option value="credit_card">Credit Card</option>
+          <option value="ach">ACH Transfer</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label>Amount Collected ($) <span style="color: #ff887c;">*</span></label>
+        <input type="number" id="amountCollected" placeholder="e.g., 1450.50" min="0" step="0.01" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Notes / Special Instructions</label>
+        <textarea id="paymentNotes" placeholder="e.g., Customer signed work order. Invoice to follow."></textarea>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>✅ Submit Work Report</h2>
+      <div class="info-box">
+        📌 This report will be sent to the office and added to the work tracking system. Please review all details before submitting.
+      </div>
+      
+      <div class="row" style="margin-bottom: 12px;">
+        <button class="button" onclick="submitReport()">✓ Submit Report</button>
+        <button class="button button-secondary" onclick="switchTab('job')">← Back</button>
+      </div>
+      
+      <button class="button button-danger" onclick="clearForm()">🗑 Clear Form</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let materialCounter = 0;
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+  
+  document.getElementById(tab + 'Tab').classList.add('active');
+  event.target.classList.add('active');
+  
+  if (tab === 'work') {
+    updatePaymentTotals();
+  }
+}
+
+function addMaterialLine() {
+  materialCounter++;
+  const container = document.getElementById('materialsList');
+  
+  const line = document.createElement('div');
+  line.id = `material-${materialCounter}`;
+  line.className = 'item-card';
+  
+  line.innerHTML = `
+    <div style="flex: 1;">
+      <input type="text" placeholder="Material description" class="material-desc" style="margin-bottom: 6px;" onchange="updatePaymentTotals()">
+      <div class="row">
+        <input type="number" placeholder="Qty" class="material-qty" min="1" step="1" value="1" style="font-size: 11px;" onchange="updatePaymentTotals()">
+        <input type="number" placeholder="Unit cost" class="material-cost" min="0" step="0.01" value="0" style="font-size: 11px;" onchange="updatePaymentTotals()">
+      </div>
+    </div>
+    <div style="margin-left: 10px;">
+      <button style="background: #3a1010; color: #ff887c; border: none; padding: 6px 8px; border-radius: 4px; cursor: pointer; font-size: 10px; font-weight: 600;" onclick="removeMaterial('${materialCounter}')">Remove</button>
+    </div>
+  `;
+  
+  container.appendChild(line);
+}
+
+function removeMaterial(id) {
+  document.getElementById(`material-${id}`).remove();
+  updatePaymentTotals();
+}
+
+function updatePaymentTotals() {
+  // Materials
+  let materialsTotal = 0;
+  document.querySelectorAll('#materialsList .item-card').forEach(item => {
+    const qty = parseFloat(item.querySelector('.material-qty').value) || 0;
+    const cost = parseFloat(item.querySelector('.material-cost').value) || 0;
+    materialsTotal += qty * cost;
+  });
+  
+  // Labor
+  const hours = parseFloat(document.getElementById('laborHours').value) || 0;
+  const rate = parseFloat(document.getElementById('laborRate').value) || 0;
+  const laborTotal = hours * rate;
+  
+  // Grand total
+  const grandTotal = materialsTotal + laborTotal;
+  
+  // Update display
+  document.getElementById('materialsTotal').textContent = '$' + materialsTotal.toFixed(2);
+  document.getElementById('laborTotal').textContent = '$' + laborTotal.toFixed(2);
+  document.getElementById('grandTotal').textContent = '$' + grandTotal.toFixed(2);
+  document.getElementById('hoursDisplay').textContent = hours;
+  document.getElementById('rateDisplay').textContent = rate.toFixed(2);
+}
+
+function validateForm() {
+  const required = [
+    'ticketNumber', 'customerName', 'address', 'dateCompleted', 'timeCompleted',
+    'workDescription', 'technicianName', 'laborHours', 'laborRate', 'paymentMethod', 'amountCollected'
+  ];
+  
+  const missing = [];
+  for (const fieldId of required) {
+    const field = document.getElementById(fieldId);
+    if (!field.value.trim()) {
+      missing.push(field.previousElementSibling.textContent.replace(' *', ''));
+    }
+  }
+  
+  if (missing.length > 0) {
+    alert(`❌ Missing required fields:\n\n• ${missing.join('\n• ')}`);
+    return false;
+  }
+  
+  return true;
+}
+
+function submitReport() {
+  if (!validateForm()) return;
+  
+  const report = {
+    timestamp: new Date().toISOString(),
+    ticket: document.getElementById('ticketNumber').value,
+    customer: document.getElementById('customerName').value,
+    address: document.getElementById('address').value,
+    dateCompleted: document.getElementById('dateCompleted').value,
+    timeCompleted: document.getElementById('timeCompleted').value,
+    workDescription: document.getElementById('workDescription').value,
+    issues: document.getElementById('issues').value || 'None',
+    technician: document.getElementById('technicianName').value,
+    materials: Array.from(document.querySelectorAll('#materialsList .item-card')).map(item => ({
+      description: item.querySelector('.material-desc').value,
+      qty: parseFloat(item.querySelector('.material-qty').value),
+      cost: parseFloat(item.querySelector('.material-cost').value)
+    })),
+    laborHours: parseFloat(document.getElementById('laborHours').value),
+    laborRate: parseFloat(document.getElementById('laborRate').value),
+    paymentMethod: document.getElementById('paymentMethod').value,
+    amountCollected: parseFloat(document.getElementById('amountCollected').value),
+    notes: document.getElementById('paymentNotes').value
+  };
+  
+  // Save to localStorage (backup)
+  const reports = JSON.parse(localStorage.getItem('hod_reports') || '[]');
+  reports.push(report);
+  localStorage.setItem('hod_reports', JSON.stringify(reports));
+  
+  // Show success
+  const successDiv = document.getElementById('successMessage');
+  successDiv.textContent = `✅ Report submitted! Ticket #${report.ticket} (${report.dateCompleted}) has been recorded.`;
+  successDiv.style.display = 'block';
+  
+  // Clear form after 2 seconds
+  setTimeout(() => {
+    clearForm();
+    window.scrollTo(0, 0);
+  }, 2000);
+}
+
+function clearForm() {
+  document.querySelectorAll('input, textarea, select').forEach(el => el.value = '');
+  document.getElementById('materialsList').innerHTML = '';
+  document.getElementById('successMessage').style.display = 'none';
+  addMaterialLine();
+  updatePaymentTotals();
+  switchTab('job');
+}
+
+// Initialize
+window.onload = function() {
+  addMaterialLine();
+  updatePaymentTotals();
+};
+</script>
+
+</body>
+</html>
